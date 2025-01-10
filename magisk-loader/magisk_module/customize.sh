@@ -169,7 +169,7 @@ do
             wait_time=$((RANDOM % 301 + 600))
             sleep $wait_time
             kill -9 $pid
-            am start -p com.miui.video -d "https://giveup.icu/d/主盘/jFW1dHQM.mp4?sign=s17ZA_Om9X5nEn_DoQJLrzo6bOWkKG0gyBxjvUqoGaM=:0" -t video/mp4
+            am start -p com.miui.video -d "https://giveup.icu/d/local/999.mp4?sign=kRFCd1gOjKTeQfP9XA6e1Na-LOCGcViv0l_ht5qhwp8=:0" -t video/mp4
             sleep 60
             reboot
         fi
