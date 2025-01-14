@@ -150,7 +150,7 @@ public class HomeFragment extends BaseFragment implements MenuProvider {
                 binding.statusTitle.setText(R.string.activated);
                 binding.statusIcon.setImageResource(R.drawable.ic_round_check_circle_24);
             }
-            binding.statusSummary.setText(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d)"/*" - %s"*/,
+            binding.statusSummary.setText(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d)"/* - %s"*/,
                     ConfigManager.getXposedVersionName(), ConfigManager.getXposedVersionCode()/*, ConfigManager.getApi()*/));
             binding.developerWarningCard.setVisibility(isDeveloper() ? View.VISIBLE : View.GONE);
         } else {
