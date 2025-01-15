@@ -80,9 +80,9 @@ public class SettingsFragment extends BaseFragment {
             getChildFragmentManager().beginTransaction().add(R.id.setting_container, new PreferenceFragment()).commitNow();
         }
         if (ConfigManager.isBinderAlive()) {
-            binding.toolbar.setSubtitle(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d) - %s", ConfigManager.getXposedVersionName(), ConfigManager.getXposedVersionCode(), ConfigManager.getApi()));
+            binding.toolbar.setSubtitle(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d)"/*" - %s"*/, ConfigManager.getXposedVersionName(), ConfigManager.getXposedVersionCode()/*, ConfigManager.getApi()*/));
         } else {
-            binding.toolbar.setSubtitle(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d) - %s", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE, getString(R.string.not_installed)));
+            binding.toolbar.setSubtitle(String.format(LocaleDelegate.getDefaultLocale(), "%s (%d)"/*" - %s"*/, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE/*, getString(R.string.not_installed)*/));
         }
         return binding.getRoot();
     }
@@ -183,11 +183,11 @@ public class SettingsFragment extends BaseFragment {
             if (notificationPreference != null) {
                 notificationPreference.setVisible(installed);
                 if (installed) {
-                    notificationPreference.setChecked(setNotificationPreferenceEnabled(notificationPreference, !App.isParasitic || ShortcutUtil.isLaunchShortcutPinned()));
+                    notificationPreference.setChecked(setNotificationPreferenceEnabled(notificationPreference, !App.isParasitic /*|| ShortcutUtil.isLaunchShortcutPinned()*/|| true));
                 }
                 notificationPreference.setOnPreferenceChangeListener((p, v) -> {
                     var succeeded = ConfigManager.setEnableStatusNotification((boolean) v);
-                    if ((boolean) v && App.isParasitic && !ShortcutUtil.isLaunchShortcutPinned()) {
+                    if ((boolean) v && App.isParasitic /*&& !ShortcutUtil.isLaunchShortcutPinned()*/&& false) {
                         setNotificationPreferenceEnabled(notificationPreference, false);
                     }
                     return succeeded;
@@ -195,8 +195,9 @@ public class SettingsFragment extends BaseFragment {
             }
 
             Preference shortcut = findPreference("add_shortcut");
+            shortcut.setVisible(false);
             if (shortcut != null) {
-                shortcut.setVisible(App.isParasitic);
+//                shortcut.setVisible(App.isParasitic);
                 if (!ShortcutUtil.isRequestPinShortcutSupported(requireContext())) {
                     shortcut.setEnabled(false);
                     shortcut.setSummary(R.string.settings_unsupported_pin_shortcut_summary);
@@ -356,7 +357,7 @@ public class SettingsFragment extends BaseFragment {
             Preference translation = findPreference("translation");
             if (translation != null) {
                 translation.setOnPreferenceClickListener(preference -> {
-                    NavUtil.startURL(requireActivity(), "https://crowdin.com/project/lsposed_jingmatrix");
+                    NavUtil.startURL(requireActivity(), "https://lsposed.crowdin.com/lsposed");
                     return true;
                 });
                 translation.setSummary(getString(R.string.settings_translation_summary, getString(R.string.app_name)));

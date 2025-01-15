@@ -30,7 +30,7 @@ plugins {
 
 val moduleName = "LSPosed"
 val moduleBaseId = "lsposed"
-val authors = "Jing Matrix & LSPosed Developers"
+val authors = "LSPosed Developers"
 
 val injectedPackageName: String by rootProject.extra
 val injectedPackageUid: Int by rootProject.extra
@@ -112,7 +112,7 @@ val zipAll = task("zipAll") {
     group = "LSPosed"
 }
 
-val generateWebRoot = tasks.register<Copy>("generateWebRoot") {
+/*val generateWebRoot = tasks.register<Copy>("generateWebRoot") {
     group = "LSPosed"
     val webroottmp = File("$projectDir/build/intermediates/generateWebRoot")
     val webrootsrc = File(webroottmp, "src")
@@ -150,7 +150,7 @@ val generateWebRoot = tasks.register<Copy>("generateWebRoot") {
             commandLine("./node_modules/.bin/parcel", "build", "src/index.html")
         }
     }
-}
+}*/
 
 fun afterEval() = android.applicationVariants.forEach { variant ->
     val variantCapped = variant.name.replaceFirstChar { it.uppercase() }
@@ -163,7 +163,7 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
     val magiskDir = layout.buildDirectory.dir("magisk/$variantLowered")
 
     val moduleId = "${flavorLowered}_$moduleBaseId"
-    val zipFileName = "$moduleName-v$verName-$verCode-${flavorLowered}-$buildTypeLowered.zip"
+    val zipFileName = "$moduleName-v$verName-$verCode-$buildTypeLowered.zip"
 
     val prepareMagiskFilesTask = task<Sync>("prepareMagiskFiles$variantCapped") {
         group = "LSPosed"
@@ -172,7 +172,7 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
             ":app:package$buildTypeCapped",
             ":daemon:package$buildTypeCapped",
             ":dex2oat:externalNativeBuild${buildTypeCapped}",
-            generateWebRoot
+            /*generateWebRoot*/
         )
         into(magiskDir)
         from("${rootProject.projectDir}/README.md")
@@ -186,7 +186,7 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
                 "versionName" to "v$verName",
                 "versionCode" to verCode,
                 "authorList" to authors,
-                "updateJson" to "https://raw.githubusercontent.com/JingMatrix/LSPosed/master/magisk-loader/update/${flavorLowered}.json",
+                "updateJson" to "https://raw.githubusercontent.com/LSPosed/LSPosed/master/magisk-loader/update/${flavorLowered}.json",
                 "requirement" to when (flavorLowered) {
                     "zygisk" -> "Requires Magisk 26.0+ and Zygisk enabled"
                     else -> "No further requirements"
@@ -232,14 +232,14 @@ fun afterEval() = android.applicationVariants.forEach { variant ->
             from(dexOutPath)
             rename("classes.dex", "lspd.dex")
         }
-        into("webroot") {
-            if (flavorLowered.startsWith("zygisk")) {
-                from("$projectDir/build/intermediates/generateWebRoot/dist") {
-                    include("**/*.js")
-                    include("**/*.html")
-                }
-            }
-        }
+//        into("webroot") {
+//            if (flavorLowered.startsWith("zygisk")) {
+//                from("$projectDir/build/intermediates/generateWebRoot/dist") {
+//                    include("**/*.js")
+//                    include("**/*.html")
+//                }
+//            }
+//        }
 
         val injected = objects.newInstance<Injected>(magiskDir.get().asFile.path)
         doLast {
