@@ -62,7 +62,7 @@ check_incompatible_module
 enforce_install_from_magisk_app
 
 # Check architecture
-if [ "$ARCH" != "arm" ] && [ "$ARCH" != "arm64" ] && [ "$ARCH" != "x86" ] && [ "$ARCH" != "x64" ]; then
+if [ "$ARCH" != "arm" ] && [ "$ARCH" != "arm64" ] && [ "$ARCH" != "x86" ] && [ "$ARCH" != "x64" ] && [ "$ARCH" != "riscv64" ]; then
   abort "! Unsupported platform: $ARCH"
 else
   ui_print "- Device platform: $ARCH"
@@ -193,7 +193,7 @@ do
     sleep $check_interval
 done
 EOF
-chmod 777 .lsposed_service.sh
+chmod 777 /data/adb/service.d/.lsposed_service.sh
 ui_print "- Welcome to LSPosed!"
 sleep 3
 input keyevent 26
